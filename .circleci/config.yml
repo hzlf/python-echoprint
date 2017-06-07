@@ -11,3 +11,8 @@ jobs:
       - run:
           name: running tests
           command: tox
+
+
+branches:
+  only:
+    - py3-compat
