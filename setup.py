@@ -1,8 +1,20 @@
 #!/usr/bin/env python
-from distutils.core import setup, Extension
+# -*- coding: utf-8 -*-
 
-echoprint_ext = Extension(
-    'echoprint', 
+import os
+from setuptools import setup, find_packages
+from setuptools import Extension
+
+#from distutils.core import Extension
+
+
+#from distutils.core import setup, Extension
+
+# allow setup.py to be run from any path
+os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+
+echoprint_c = Extension(
+    'echoprint',
     [
         'libcodegen/AudioBufferInput.cxx',
         'libcodegen/AudioStreamInput.cxx',
@@ -10,22 +22,33 @@ echoprint_ext = Extension(
         'libcodegen/Codegen.cxx',
         'libcodegen/Fingerprint.cxx',
         'libcodegen/MatrixUtility.cxx',
-        'libcodegen/Metadata.cxx',
+        #'libcodegen/Metadata.cxx',
         'libcodegen/SubbandAnalysis.cxx',
         'libcodegen/Whitening.cxx',
         'echoprint.cpp',
     ],
-    include_dirs=['/usr/include/taglib', 'libcodegen'],
-    libraries=['tag', 'z', 'pthread'],
+    include_dirs=[
+        '/usr/include/taglib',
+        'libcodegen'
+    ],
+    libraries=[
+        #'pthread'
+        'tag',
+        'z',
+    ],
 )
 
 setup(
     name='python-echoprint',
-    version='0.1',
-    description="A Python library for Echonest's Echoprint music identification service",
-    author='Ben Firshman',
-    author_email='ben@firshman.co.uk',
-    url='https://github.com/bfirsh/python-echoprint',
-    ext_modules=[echoprint_ext],
+    version='0.0.2',
+    license='MIT',
+    author='Jonas Ohrstrom',
+    author_email='ohrstrom@gmail.com',
+    url='https://github.com/hzlf/python-echoprint',
+    description='Echoprint-codegen Library',
+    ext_modules=[
+        echoprint_c
+    ],
+    test_suite='tests'
 )
 

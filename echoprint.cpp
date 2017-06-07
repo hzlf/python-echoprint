@@ -1,3 +1,4 @@
+#include <Common.h>
 #include <Codegen.h>
 #include <Python.h>
 #include <stdio.h>
@@ -11,7 +12,7 @@ static PyObject * echoprint_codegen(PyObject *self, PyObject *args) {
     uint i;
     Codegen *pCodegen;
     PyObject *result;
-    
+
     if (!PyArg_ParseTuple(args, "O|i", &py_samples, &start_offset)) {
         return NULL;
     }
@@ -42,16 +43,41 @@ static PyObject * echoprint_codegen(PyObject *self, PyObject *args) {
     return result;
 }
 
+
+
+
 static PyMethodDef echoprint_methods[] = {
     {"codegen", echoprint_codegen, METH_VARARGS,
-     "Generates a echoprint code for a list of floating point PCM data sampled at 11025 Hz and mono. Optionally takes a second integer argument to hint the server on where the sample is taken from in the original file if known."},
+     "Generates a echoprint code for a list of floating point PCM data sampled at 11025 Hz and mono."},
     {NULL, NULL, 0, NULL}
 };
 
+
+// python 2.7 version
+#if PY_MAJOR_VERSION == 2
 PyMODINIT_FUNC
 initechoprint(void)
 {
     (void) Py_InitModule("echoprint", echoprint_methods);
 }
+#endif
 
 
+// python 3.x version
+// https://stackoverflow.com/questions/28305731/compiler-cant-find-py-initmodule-is-it-deprecated-and-if-so-what-should-i
+// https://docs.python.org/3/howto/cporting.html#cporting-howto
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef echoprint =
+{
+    PyModuleDef_HEAD_INIT,
+    "echoprint",
+    "",
+    -1,
+    echoprint_methods
+};
+
+PyMODINIT_FUNC PyInit_echoprint(void)
+{
+    return PyModule_Create(&echoprint);
+}
+#endif

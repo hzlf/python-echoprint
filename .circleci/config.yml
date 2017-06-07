@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/python-echoprint
+    docker:
+      - image: circleci/python:3.6.1
+    steps:
+      - checkout
+      - run:
+          command: pip install tox
+      - run:
+          name: running tests
+          command: tox

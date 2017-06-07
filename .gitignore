@@ -1,6 +1,9 @@
 *.pyc
-/build
-.*~
-.*.swp
-.*.swo
 .DS_Store
+.idea
+/build
+.tox
+*.so
+env
+env3
+*.egg-info
